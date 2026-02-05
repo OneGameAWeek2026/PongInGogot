@@ -1,0 +1,147 @@
+[gd_scene load_steps=10 format=3 uid="uid://dd2tqthp1wamj"]
+
+[ext_resource type="Script" uid="uid://0tcbe3n5oq44" path="res://Scenes/GameManager.gd" id="1_kln2b"]
+[ext_resource type="Texture2D" uid="uid://b2gaywsjq02s0" path="res://Sprites/Background.png" id="1_r150o"]
+[ext_resource type="FontFile" uid="uid://c4dn7yve1flks" path="res://Cairopixel-G3DeP.ttf" id="2_idj7w"]
+[ext_resource type="Script" uid="uid://d302mtu886rrk" path="res://Scenes/ball.gd" id="3_rgh2o"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_idj7w"]
+size = Vector2(25, 140)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kln2b"]
+size = Vector2(15, 15)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rgh2o"]
+size = Vector2(1920, 106)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pbw6q"]
+size = Vector2(1920, 78)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v1gob"]
+size = Vector2(83, 1080)
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_kln2b")
+
+[node name="Main" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_r150o")
+centered = false
+
+[node name="Player1" type="StaticBody2D" parent="Main"]
+position = Vector2(50, 540)
+
+[node name="ColorRect" type="ColorRect" parent="Main/Player1"]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -70.0
+offset_right = 25.0
+offset_bottom = 70.0
+grow_vertical = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Main/Player1"]
+position = Vector2(12.5, 0)
+shape = SubResource("RectangleShape2D_idj7w")
+
+[node name="Player2" type="StaticBody2D" parent="Main"]
+position = Vector2(1870, 540)
+
+[node name="ColorRect" type="ColorRect" parent="Main/Player2"]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -70.0
+offset_right = 25.0
+offset_bottom = 70.0
+grow_vertical = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Main/Player2"]
+position = Vector2(12.5, 0)
+shape = SubResource("RectangleShape2D_idj7w")
+
+[node name="Ball" type="CharacterBody2D" parent="Main"]
+position = Vector2(960, 540)
+script = ExtResource("3_rgh2o")
+
+[node name="ColorRect" type="ColorRect" parent="Main/Ball"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -7.5
+offset_top = -7.5
+offset_right = 7.5
+offset_bottom = 7.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Main/Ball"]
+position = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_kln2b")
+
+[node name="Barrier" type="StaticBody2D" parent="Main"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Main/Barrier"]
+position = Vector2(960, -53)
+shape = SubResource("RectangleShape2D_rgh2o")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Main/Barrier"]
+position = Vector2(960, 1119)
+shape = SubResource("RectangleShape2D_pbw6q")
+
+[node name="ScoreLeft" type="Area2D" parent="Main"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Main/ScoreLeft"]
+position = Vector2(-64, 541)
+shape = SubResource("RectangleShape2D_v1gob")
+
+[node name="ScoreRight" type="Area2D" parent="Main"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Main/ScoreRight"]
+position = Vector2(1983, 540)
+shape = SubResource("RectangleShape2D_v1gob")
+
+[node name="HUD" type="CanvasLayer" parent="Main"]
+
+[node name="Player1Score" type="Label" parent="Main/HUD"]
+offset_left = 476.0
+offset_top = 22.0
+offset_right = 917.0
+offset_bottom = 309.0
+theme_override_fonts/font = ExtResource("2_idj7w")
+theme_override_font_sizes/font_size = 150
+text = "0
+"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Colon" type="Label" parent="Main/HUD"]
+offset_left = 853.0
+offset_top = -53.0
+offset_right = 1081.0
+offset_bottom = 234.0
+theme_override_colors/font_color = Color(0.24705882, 0.28235295, 0.8, 1)
+theme_override_fonts/font = ExtResource("2_idj7w")
+theme_override_font_sizes/font_size = 150
+text = ":"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Player2Score" type="Label" parent="Main/HUD"]
+offset_left = 1005.0
+offset_top = 22.0
+offset_right = 1425.0
+offset_bottom = 309.0
+theme_override_fonts/font = ExtResource("2_idj7w")
+theme_override_font_sizes/font_size = 150
+text = "0
+"
+vertical_alignment = 1
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Timer" to="Main/Ball" method="_on_timer_timeout"]
